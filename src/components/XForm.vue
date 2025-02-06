@@ -6,6 +6,7 @@
         :is="item.component ? item.component : 'input'"
         v-bind="omit(item, 'field', 'component')"
         @input="event => emitUpdate(item.field, event.target.value)"
+        :name="item.field"
       />
     </template>
   </form>
