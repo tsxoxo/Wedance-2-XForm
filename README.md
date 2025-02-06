@@ -1,5 +1,7 @@
 # XForm Task
 
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/tsxoxo/Wedance-2-XForm)
+
 `XForm` is an object editor and a form generator
 
 ### Acceptance criteria
