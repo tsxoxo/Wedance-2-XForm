@@ -2,13 +2,13 @@
   <form>
     <template v-for='item in props.fields'>
       <div class="form-element">
-        <label for="item.field">{{ item.field }} </label>
-        <component :id="item.field" :value="props.modelValue[item.field]"
-          :is="item.component ? item.component : 'input'" v-bind="omit(item, 'component')" />
+        <component :value="props.modelValue[item.field]" :is="item.component ? item.component : 'input'"
+          v-bind="omit(item, 'field', 'component')" />
       </div>
     </template>
-    <!-- <component v-for='component in components' :value="props.modelvalue[component.field]" :is='component.tag' v-bind='attributes' /> -->
   </form>
+
+  <!-- <component v-for='component in components' :value="props.modelvalue[component.field]" :is='component.tag' v-bind='attributes' /> -->
 </template>
 
 <script setup>
@@ -17,9 +17,13 @@ const props = defineProps({
   fields: Object
 })
 const emit = defineEmits([ 'update:modelValue' ])
-const omit = (object, ...property) => {
+const omit = (object, ...properties) => {
   const result = { ...object }
-  property.forEach(property => (delete result[ property ]))
+
+  properties.forEach(property => {
+    // prettier-ignore 
+    delete result[ property ]
+  })
 
   return result
 }
