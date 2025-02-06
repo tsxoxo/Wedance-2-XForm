@@ -27,6 +27,8 @@
 
 3. Is there a more elegant way to get all the children of a DOM element? `wrapper.findAll('form')[0].children` === undefined
 
+4. Does it make sense to test the emits? Seems like in this case, the result is what matters and we test that by checking the HTML.
+
 ### Comments
 
 1. This implementation seems to meet the acceptance criteria. However, from a common sense perspective, I felt the need to refine it so that a field with `field.component = 'div'` renders `{{modelValue[field.field]}}` as its text. I didn't do this because last time I got docked points for doing more than asked for. I thought that this merits a comment because not seeing this in the criteria gave me pause for a moment.
