@@ -1,40 +1,35 @@
 import { expect, test } from "vitest"
 import { mount } from "@vue/test-utils"
-import { XForm } from "./XForm.vue"
+import XForm from "./XForm.vue"
+import App from "../App.vue"
 
-test("1. it accepts object in v-model", () => {
-    const wrapper = mount(XForm, {
-        props: {},
-    })
-    // How to test for that?
-    expect(wrapper.text()).toContain("bar")
+test("Test v-model binding", async () => {
+    const wrapper = mount(App)
+    await wrapper.get('input[(type = "text")').setValue("foobarunique")
+    expect(wrapper.get("pre").text()).toContain("foobarunique")
 })
 
-test('2. XForm accepts array of objects in "fields" property', () => {
-    const testArray = []
+test("Test number of elements and attribute binding", async () => {
+    const wrapper = mount(App)
+    const allForms = wrapper.findAll("form")
+    const generatedComponentsObj1 = allForms[0].findAll("*")
+    const generatedComponentsObj2 = allForms[1].findAll("*")
+    const generatedComponentsObj3 = allForms[2].findAll("*")
 
-    const wrapper = mount(XForm, {
-        props: {
-            fields: testArray,
-        },
-    })
-    // Again: How to test for that?
-    expect(wrapper.text()).toContain("bar")
+    // Criterion 3: form has same amount of children as there are elements in fields
+    expect(generatedComponentsObj1).toHaveLength(3)
+    expect(generatedComponentsObj2).toHaveLength(5)
+    expect(generatedComponentsObj3).toHaveLength(2)
+
+    // Test attribute binding
+    expect(generatedComponentsObj1[0].attributes("name")).toBe("name")
+    expect(generatedComponentsObj1[0].attributes("placeholder")).toBe("Name")
+    expect(generatedComponentsObj1[1].attributes("name")).toBe("dateOfBirth")
+    expect(generatedComponentsObj1[1].attributes("type")).toBe("datetime")
+    expect(generatedComponentsObj1[2].attributes("name")).toBe("eyeColor")
 })
 
-test("3. XForm renders `<form>` with the same amount of child elements as length of `fields` array", () => {
-    const testArray = []
-
-    const wrapper = mount(XForm, {
-        props: {
-            fields: testArray,
-        },
-    })
-    // Count children of <form> element
-    //  expect(wrapper.findAll('???')).toHaveLength(xxx)
-})
-
-test("3. XForm renders given myObject1, myFields1 into myResult1", () => {
+test("Test attribute bindings (Crit. 8)", async () => {
     const myObject1 = {
         name: "Alex",
         dateOfBirth: "06.01.1989",
@@ -58,19 +53,23 @@ test("3. XForm renders given myObject1, myFields1 into myResult1", () => {
 
     const wrapper = mount(XForm, {
         props: {
-            "v-model": myObject1,
+            modelValue: myObject1,
             fields: myFields1,
         },
     })
     const generatedInputs = wrapper.findAll("input")
     // Criterion 3: form has same amount of children as there are elements in fields
     expect(generatedInputs).toHaveLength(3)
+
     // Test attribute binding
-    expect(generatedInputs[0]).attributes("name").toBe("name")
-    expect(generatedInputs[0]).attributes("placeholder").toBe("Name")
-    expect(generatedInputs[1]).attributes("name").toBe("dateOfBirth")
-    expect(generatedInputs[1]).attributes("type").toBe("datetime")
-    expect(generatedInputs[2]).attributes("name").toBe("eyeColor")
-    // Test binding change to input[property] => change to myObject[property]
-    // HOw to do that?
+    expect(generatedInputs[0].attributes("name")).toBe("name")
+    expect(generatedInputs[0].attributes("placeholder")).toBe("Name")
+    expect(generatedInputs[1].attributes("name")).toBe("dateOfBirth")
+    expect(generatedInputs[1].attributes("type")).toBe("datetime")
+    expect(generatedInputs[2].attributes("name")).toBe("eyeColor")
+
+    // Test binding modelValue => input
+    // Does this add value to the test?
+    await wrapper.setProps({ modelValue: { ...myObject1, name: "foo" } })
+    expect(generatedInputs[0].element.value).toBe("foo")
 })
