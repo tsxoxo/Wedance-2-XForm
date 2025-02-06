@@ -18,10 +18,19 @@
 ### Questions
 
 1. Approaches to testing -- What makes more sense?
-   1a. Map each acceptance criteria to a single test -- so that there are exactly 10 tests. Then I ask myself if a criterium like 1 is even strictly testable.
-   1b. Synthesize tests from multiple criteria -- e.g. Test 1 covers generic HTML generation (could cover criteria 1, 2, 3), test 2 covers attribute generation (could cover criteria 8), test 3 covers reactivity (could cover criteria 9), and so on. This seems like a more efficient approach on the surface, but synthesizing tests is overhead and trying to keep the criteria apart while covering them all seems like it could get messy fast.
+
+    1a. Map each acceptance criteria to a single test -- so that there are exactly 10 tests. Then I ask myself if a criterion like 1 is even strictly testable.
+
+    1b. Synthesize tests from multiple criteria -- e.g. Test 1 covers generic HTML generation (could cover criteria 1, 2, 3), test 2 covers attribute generation (could cover criteria 8), test 3 covers reactivity (could cover criteria 9), and so on. This seems like a more efficient approach on the surface, but synthesizing tests is overhead and trying to keep the criteria apart while covering them all seems like it could get messy fast.
+
+2. Does it make sense to test directly for generated HTML? That seems precise but fragile -- tests start to break on the slightest change to the markup.
+
+3. Is there a more elegant way to get all the children of a DOM element? `wrapper.findAll('form')[0].children` === undefined
 
 ### Comments
 
-1. This implementation seems to meet the acceptance criteria. However, from a common sense perspective I felt the need to refine it so that a field with `field.component = 'div'` renders `{{modelValue[field.field]}}`. I didn't do this because last time I got docked points for doing more than asked for. I thought that this merits a comment because the lack of specification gave me pause for a moment.
-2. type='datetime' doesn't seem to meaningfully change an <input>. Should it be 'datetime-local'?
+1. This implementation seems to meet the acceptance criteria. However, from a common sense perspective, I felt the need to refine it so that a field with `field.component = 'div'` renders `{{modelValue[field.field]}}` as its text. I didn't do this because last time I got docked points for doing more than asked for. I thought that this merits a comment because not seeing this in the criteria gave me pause for a moment.
+
+2. type='datetime' doesn't seem to meaningfully change an <input>. Should it be 'datetime-local'? Again, kept to the criteria.
+
+3. The challenge specifies to use composition API but the component XForm starts out with the Option API, which suggests otherwise.
