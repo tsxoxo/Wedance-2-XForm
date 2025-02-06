@@ -2,8 +2,10 @@
   <div>
     <XForm v-model="myObject1" :fields="myFields1" />
     <pre>{{ myObject1 }}</pre>
+    <hr>
     <XForm v-model="myObject2" :fields="myFields2" />
     <pre>{{ myObject2 }}</pre>
+    <hr>
     <XForm v-model="myObject3" :fields="myFields3" />
     <pre>{{ myObject3 }}</pre>
   </div>
